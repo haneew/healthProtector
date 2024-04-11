@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.itbank.repository.ChatDAO">
+	<insert id="insert" parameterType="chat">
+		insert into health_chat (who_chat, who_send, content, isRead)
+		values (#{who_chat}, #{who_send}, #{content}, #{isRead})
+	</insert>
+	
+	<select id="select" parameterType="string">
+		select * from health_chat where who_chat = #{who_chat} order by idx
+	</select>
+	
+	<delete id="delete" parameterType="string">
+		delete from health_chat where who_chat = #{who_chat}
+	</delete>
+	
+	<select id="load">
+		select who_chat from health_chat group by who_chat
+	</select>
+	
+	<select id="readCheck" parameterType="map">
+		select count(*) from health_chat where who_chat = #{who_chat} and who_send=#{who_send} and isRead=1
+	</select>
+	
+	<update id="read" parameterType="map">
+		update health_chat set isRead = 0 where who_chat = #{who_chat} and who_send = #{who_send}
+	</update>
+</mapper>

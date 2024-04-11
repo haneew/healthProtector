@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC 
+	"-//mybatis.org//DTD Config 3.0//EN" 
+	"https://mybatis.org/dtd/mybatis-3-config.dtd">
+	
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.itbank.model.NutritionDTO" alias="nutrition" />
+		<typeAlias type="com.itbank.model.FoodDTO" alias="food" />
+		<typeAlias type="com.itbank.model.TicketDTO" alias="ticket" />
+		<typeAlias type="com.itbank.model.DealDTO" alias="deal" />
+		<typeAlias type="com.itbank.model.AbscentDTO" alias="abscent" />
+		<typeAlias type="com.itbank.model.ChatDTO" alias="chat" />
+		<typeAlias type="com.itbank.model.InfoDTO" alias="info" />
+		<typeAlias type="com.itbank.model.MemberDTO" alias="member" />
+	</typeAliases>
+</configuration>
+
+
+

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.itbank.repository.FoodDAO">
+	
+	<select id="selectSearchList" parameterType="map">
+	    SELECT * 
+	    FROM health_food 
+	    WHERE 
+	    <if test="food_name != null or group_name != null">
+	        <if test="food_name != null">
+	            food_name LIKE '%' || #{food_name} || '%'
+	        </if>
+	        <if test="food_name != null and group_name != null">
+	            AND
+	        </if>
+	        <if test="group_name != null">
+	            <choose>
+	                <when test="_parameter['group_name'].getClass().isArray()">
+	                    group_name IN 
+	                    <foreach collection="group_name" item="item" 
+	                        separator="," open="(" close=")">
+	                        #{item}
+	                    </foreach>
+	                </when>
+	                <otherwise>
+	                    group_name = #{group_name}
+	                </otherwise>
+	            </choose>
+	        </if>
+	    </if>
+	    OFFSET #{offset} ROWS 
+	    FETCH NEXT #{fetchnum} ROWS ONLY
+	</select>
+	
+	<select id="selectCategory">
+		SELECT group_name FROM health_food 
+			 WHERE group_name IN ('사용자등록', '밥류', '구이류', '국류') GROUP BY group_name 
+			 UNION 
+			 SELECT group_name FROM (SELECT group_name FROM health_food 
+			 							WHERE group_name NOT IN ('사용자등록', '밥류', '구이류', '국류') 
+			 ORDER BY DBMS_RANDOM.VALUE ) 
+			 WHERE rownum <![CDATA[<=]]> 5
+	</select>
+	
+	<insert id="insert" parameterType="food">
+		insert into health_food (group_name, food_name, capacity, tan, dan, ji ,dang, na, kcal) 
+			values (#{group_name}, #{food_name}, #{capacity}, #{tan}, #{dan}, #{ji}, #{dang}, #{na}, #{kcal})
+	</insert>
+	
+	<select id="selectListByUserInsert">
+		select * from health_food where group_name = '사용자등록'
+	</select>
+	
+<!-- 	<select id="selectList" resultType="board"> -->
+<!-- 		select * from board3  -->
+<!-- 			order by  -->
+<!-- 				isNotice 	desc,  -->
+<!-- 				idx 		desc -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="selectOne" resultType="board" parameterType="int"> -->
+<!-- 		select * from board3 -->
+<!-- 			where -->
+<!-- 				idx = #{idx} -->
+<!-- 	</select> -->
+	
+<!-- 	<insert id="insert" parameterType="board"> -->
+<!-- 		insert into board3 (title, writer, content, isNotice) -->
+<!-- 			values  -->
+<!-- 				(#{title}, #{writer}, #{content}, #{isNotice}) -->
+<!-- 	</insert> -->
+	
+<!-- 	<delete id="delete" parameterType="int"> -->
+<!-- 		delete board3 where idx = #{idx} -->
+<!-- 	</delete> -->
+	
+</mapper>
+
+
+
+
+
+
+
+
+
